@@ -1,13 +1,15 @@
+require('dotenv').config()
 const express = require('express');
 const mongoose = require('mongoose');
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 const path = require('path');
 const app = express();
+const helmet = require("helmet");
 
 
 
-mongoose.connect('mongodb+srv://sabri_861:azerty861@cluster0.ayyum.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MANGODB,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -25,7 +27,7 @@ app.use((req, res, next) => {
     next();
   });
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
+app.use(helmet());
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes);
 module.exports = app;
